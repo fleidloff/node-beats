@@ -47,3 +47,22 @@ sequence.forEach(step => {
 
 // Begin playing the sequence
 stepSequencer.play();	
+
+var stdin = process.openStdin(); 
+stdin.setRawMode( true )
+stdin.resume(); 
+stdin.on('data', function (chunk) { 
+	process.exit(0);
+	switch(chunk) {
+		case 'x': process.exit(0);
+		default: process.stdout.write('data: ' + chunk); 
+	}
+});
+
+// todo: 
+// * add more beats
+// * add fills
+// * add variation
+// * add web interface to control everything
+// * add sound selection
+// * add terminal interface
