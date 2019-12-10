@@ -49,14 +49,11 @@ sequence.forEach(step => {
 stepSequencer.play();	
 
 var stdin = process.openStdin(); 
-stdin.setRawMode( true )
-stdin.resume(); 
+//stdin.setRawMode( true )
+//stdin.resume(); 
 stdin.on('data', function (chunk) { 
-	process.exit(0);
-	switch(chunk) {
-		case 'x': process.exit(0);
-		default: process.stdout.write('data: ' + chunk); 
-	}
+	//process.exit(0);
+	stepSequencer.setTempo(parseInt(chunk));
 });
 
 // todo: 
