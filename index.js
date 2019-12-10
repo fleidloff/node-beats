@@ -63,3 +63,4 @@ stdin.on('data', function (chunk) {
 // * add web interface to control everything
 // * add sound selection
 // * add terminal interface
+// * add shuffle / swing
