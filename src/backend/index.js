@@ -27,38 +27,37 @@ const song = {
 const app = express();
 app.use(express.json());
 
+app
+  .route("/events")
+  .get(function(req, res, next) {
+    res.json({});
+  })
+  .post(function(req, res, next) {
+    const { action, payload } = req.body;
 
-  app
-    .route("/events")
-    .get(function(req, res, next) {
-      res.json({});
-    })
-    .post(function(req, res, next) {
-      const { action, payload } = req.body;
+    switch (action) {
+      case "togglePlay":
+        stepPlayer.togglePlayStop(song);
+        res.status(201).end();
+        break;
+      case "getSong":
+        res.json(song);
+        break;
+      case "setInstrument":
+        song[payload.instrument] = payload.steps;
+        res.json(song);
+        break;
+      case "setTempo":
+        stepPlayer.setTempo(payload);
+        res.status(201).end();
+        break;
+      default:
+        res.status(201).end();
+    }
+  });
 
-      switch (action) {
-        case "togglePlay":
-          stepPlayer.togglePlayStop(song);
-          res.status(201).end();
-          break;
-        case "getSong":
-          res.json(song);
-          break;
-        case "setInstrument":
-          song[payload.instrument] = payload.steps;
-          res.status(201).end();
-          break;
-        case "setTempo":
-          stepPlayer.setTempo(payload);
-          res.status(201).end();
-          break;
-        default:
-          res.status(201).end();
-      }
-    });
-
-  const port = 8081;
-  app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const port = 8081;
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 // todo:
 // * add more beats
