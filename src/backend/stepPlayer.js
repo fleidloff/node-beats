@@ -9,17 +9,28 @@ const stepPlayer = {
   steps: 16,
 
   playSong(song) {
+    this.stop();
     const sequence = [...new Array(this.steps).keys()]; // range 0-15
-    const stepSequencer = new StepSequencer(this.tempo, this.division, sequence);
+    this.stepSequencer = new StepSequencer(this.tempo, this.division, sequence);
 
     sequence.forEach(step => {
-      stepSequencer.on(step, step => {
+      this.stepSequencer.on(step, step => {
         this.play(step + 1, song);
       });
     });
 
     // Begin playing the sequence
-    stepSequencer.play();
+    this.stepSequencer.play();
+    this.playing = true;
+  },
+
+  stop() {
+    this.stepSequencer && this.stepSequencer.stop();
+    this.playing = false;
+  },
+
+  togglePlayStop(song) {
+    this.playing ? this.stop() : this.playSong(song);
   },
 
   play(step, song) {

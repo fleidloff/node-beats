@@ -1,4 +1,3 @@
-
 var stdin = process.openStdin();
 //stdin.setRawMode( true )
 //stdin.resume();
