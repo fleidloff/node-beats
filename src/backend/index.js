@@ -27,10 +27,6 @@ const song = {
 const app = express();
 app.use(express.json());
 
-app.route("/togglePlay").all((req, res, next) => {
-  stepPlayer.togglePlayStop(song);
-  res.status(201).end();
-});
 app
   .route("/events")
   .get(function(req, res, next) {
@@ -51,8 +47,12 @@ app
         song[payload.instrument] = payload.steps;
         res.status(201).end();
         break;
+      case "setTempo":
+        stepPlayer.setTempo(payload);
+        res.status(201).end();
+        break;
       default:
-        res.json({});
+        res.status(201).end();
     }
   });
 

@@ -8,6 +8,11 @@ const stepPlayer = {
 
   steps: 16,
 
+  setTempo(tempo) {
+    this.tempo = tempo;
+    this.stepSequencer && this.stepSequencer.setTempo(tempo);
+  },
+
   playSong(song) {
     this.stop();
     const sequence = [...new Array(this.steps).keys()]; // range 0-15
