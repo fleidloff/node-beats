@@ -38,7 +38,7 @@ app
     switch (action) {
       case "togglePlay":
         stepPlayer.togglePlayStop(song);
-        res.status(201).end();
+        res.json({ playing: stepPlayer.playing }).end();
         break;
       case "getSong":
         res.json(song).end();

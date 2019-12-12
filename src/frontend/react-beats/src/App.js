@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
   const [song, setSong] = useState({ bd: [] });
+  const [playing, setPlaying] = useState(false);
+  const [instrument, setInstrument] = useState("bd");
 
   useEffect(() => {
     async function run() {
@@ -16,46 +17,87 @@ function App() {
 
   async function toggleStep(step) {
     let updateSong = song;
-    if (updateSong.bd.includes(step)) {
-      updateSong = { ...song, bd: song.bd.filter(item => item !== step) };
+    if (updateSong[instrument].includes(step)) {
+      updateSong = { ...song, [instrument]: song[instrument].filter(item => item !== step) };
     } else {
-      updateSong = { ...song, bd: [...song.bd, step] };
+      updateSong = { ...song, [instrument]: [...song[instrument], step] };
     }
+    setSong(updateSong);
 
     const updatedSong = await postData("/events", {
       action: "setInstrument",
-      payload: { instrument: "bd", steps: updateSong.bd }
+      payload: { instrument, steps: updateSong[instrument] }
     });
     setSong(updatedSong);
   }
 
-  function togglePlay() {
-    postData("/events", { action: "togglePlay" });
+  async function togglePlay() {
+    const response = await postData("/events", { action: "togglePlay" });
+    setPlaying(response.playing);
   }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={togglePlay}>play/ stop</button>
+      <div className="Grid-container">
+      <Placeholder />
+      <Placeholder />
+      <Placeholder />
+      <Button
+          active={playing}
+          onClick={() => togglePlay()}
+          label={playing ? "S" : "P"}
+        />
+       
         {[...new Array(16).keys()].map(step => (
           <Step
             key={step}
             which={step + 1}
-            active={song.bd.includes(step + 1)}
+            active={song[instrument].includes(step + 1)}
             onClick={() => toggleStep(step + 1)}
           />
         ))}
-      </header>
+        <Button
+          active={instrument === "bd"}
+          onClick={() => setInstrument("bd")}
+          label="bd"
+        />
+        <Button
+          active={instrument === "sd"}
+          onClick={() => setInstrument("sd")}
+          label="sd"
+        />
+        <Button
+          active={instrument === "ch"}
+          onClick={() => setInstrument("ch")}
+          label="ch"
+        />
+        <Button
+          active={instrument === "oh"}
+          onClick={() => setInstrument("oh")}
+          label="oh"
+        />
+      </div>
     </div>
+  );
+}
+
+function Button({ onClick, label, active }) {
+  return (
+    <div onClick={onClick} className={`Button${active ? " Button--active" : ""}`}>
+      {label}
+    </div>
+  );
+}
+
+function Placeholder() {
+  return (
+    <div className="Placeholder" />
   );
 }
 
 function Step({ which, active = false, onClick }) {
   return (
-    <div onClick={onClick} className={`Step${active && "--active"}`}>
-      {active ? which : " -- "}
-    </div>
+    <div onClick={onClick} className={`Step${active ? " Step--active" : ""}`} />
   );
 }
 
