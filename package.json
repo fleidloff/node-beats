@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "node ./src/backend/index.js",
     "frontend": "cd src/frontend/react-beats/ && npm run start",
-    "prettier": "prettier src/**/*.js --write",
+    "prettier": "prettier src/**/*.js --write & prettier src/frontend/react-beats/src/**/*.js --write",
     "start": "npm run backend & npm run frontend"
   },
   "author": "",

@@ -41,11 +41,11 @@ app
         res.status(201).end();
         break;
       case "getSong":
-        res.json(song);
+        res.json(song).end();
         break;
       case "setInstrument":
         song[payload.instrument] = payload.steps;
-        res.json(song);
+        res.json(song).end();
         break;
       case "setTempo":
         stepPlayer.setTempo(payload);
